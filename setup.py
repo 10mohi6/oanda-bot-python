@@ -1,0 +1,40 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="oanda-bot",
+    version="0.1.0",
+    description="oanda-bot is a python library \
+        for automated trading bot with oanda rest api on Python 3.6 and above.",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    license="MIT",
+    author="10mohi6",
+    author_email="10.mohi.6.y@gmail.com",
+    url="https://github.com/10mohi6/oanda-bot-python",
+    keywords="oanda automating trading bot python backtest report",
+    packages=find_packages(),
+    install_requires=[
+        "requests",
+        "numpy",
+        "pandas",
+        "matplotlib",
+        "APScheduler",
+        "slack_webhook",
+        "linenotipy",
+        "discordwebhook",
+    ],
+    python_requires=">=3.6.0",
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Financial and Insurance Industry",
+        "Operating System :: OS Independent",
+        "Topic :: Office/Business :: Financial :: Investment",
+        "License :: OSI Approved :: MIT License",
+    ],
+)
