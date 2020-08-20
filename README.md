@@ -25,11 +25,11 @@ class MyBot(Bot):
         fast_ma = self.sma(period=5)
         slow_ma = self.sma(period=25)
         # golden cross
-        bt.sell_exit = bt.buy_entry = (fast_ma > slow_ma) & (
+        self.sell_exit = self.buy_entry = (fast_ma > slow_ma) & (
             fast_ma.shift() <= slow_ma.shift()
         )
         # dead cross
-        bt.buy_exit = bt.sell_entry = (fast_ma < slow_ma) & (
+        self.buy_exit = self.sell_entry = (fast_ma < slow_ma) & (
             fast_ma.shift() >= slow_ma.shift()
         )
 
@@ -48,11 +48,11 @@ class MyBot(Bot):
         fast_ma = self.sma(period=5)
         slow_ma = self.sma(period=25)
         # golden cross
-        bt.sell_exit = bt.buy_entry = (fast_ma > slow_ma) & (
+        self.sell_exit = self.buy_entry = (fast_ma > slow_ma) & (
             fast_ma.shift() <= slow_ma.shift()
         )
         # dead cross
-        bt.buy_exit = bt.sell_entry = (fast_ma < slow_ma) & (
+        self.buy_exit = self.sell_entry = (fast_ma < slow_ma) & (
             fast_ma.shift() >= slow_ma.shift()
         )
 
@@ -66,20 +66,7 @@ MyBot(
 ```python
 from oanda_bot import Bot
 
-class MyBot(Bot):
-    def strategy(self):
-        fast_ma = self.sma(period=5)
-        slow_ma = self.sma(period=25)
-        # golden cross
-        bt.sell_exit = bt.buy_entry = (fast_ma > slow_ma) & (
-            fast_ma.shift() <= slow_ma.shift()
-        )
-        # dead cross
-        bt.buy_exit = bt.sell_entry = (fast_ma < slow_ma) & (
-            fast_ma.shift() >= slow_ma.shift()
-        )
-
-MyBot(
+Bot(
     account_id='<your practice account id>',
     access_token='<your practice access token>',
 ).report()
@@ -100,8 +87,8 @@ class MyBot(Bot):
         self.sell_exit = ema > self.df.C
         self.buy_exit = ema < self.df.C
         self.units = 1000 # currency unit (default=10000)
-        self.take_profit = 50 # take profit pips (default=0)
-        self.stop_loss = 20 # stop loss pips (default=0)
+        self.take_profit = 50 # take profit pips (default=0 take profit none)
+        self.stop_loss = 20 # stop loss pips (default=0 stop loss none)
 
 MyBot(
     account_id='<your practice account id>',
@@ -137,6 +124,9 @@ class MyBot(Bot):
         self.sell_entry = (rsi > 70) & (self.df.C > upper)
         self.sell_exit = ema > self.df.C
         self.buy_exit = ema < self.df.C
+        self.units = 1000 # currency unit (default=10000)
+        self.take_profit = 50 # take profit pips (default=0 take profit none)
+        self.stop_loss = 20 # stop loss pips (default=0 stop loss none)
 
 MyBot(
     account_id='<your practice account id>',
@@ -164,18 +154,7 @@ take profit            0.000
 ```python
 from oanda_bot import Bot
 
-class MyBot(Bot):
-    def strategy(self):
-        rsi = self.rsi(period=10)
-        ema = self.ema(period=20)
-        lower = ema - (ema * 0.001)
-        upper = ema + (ema * 0.001)
-        self.buy_entry = (rsi < 30) & (self.df.C < lower)
-        self.sell_entry = (rsi > 70) & (self.df.C > upper)
-        self.sell_exit = ema > self.df.C
-        self.buy_exit = ema < self.df.C
-
-MyBot(
+Bot(
     account_id='<your practice account id>',
     access_token='<your practice access token>',
     instrument='USD_JPY',
@@ -200,11 +179,20 @@ average return        -10.319
 from oanda_bot import Bot
 
 class MyBot(Bot):
+    def atr(self, *, period: int = 14, price: str = "C"):
+        a = (self.df.H - self.df.L).abs()
+        b = (self.df.H - self.df[price].shift()).abs()
+        c = (self.df.L - self.df[price].shift()).abs()
+
+        df = pd.concat([a, b, c], axis=1).max(axis=1)
+        return df.ewm(span=period).mean()
+
     def strategy(self):
         rsi = self.rsi(period=10)
         ema = self.ema(period=20)
-        lower = ema - (ema * 0.001)
-        upper = ema + (ema * 0.001)
+        atr = self.atr(period=20)
+        lower = ema - atr
+        upper = ema + atr
         self.buy_entry = (rsi < 30) & (self.df.C < lower)
         self.sell_entry = (rsi > 70) & (self.df.C > upper)
         self.sell_exit = ema > self.df.C

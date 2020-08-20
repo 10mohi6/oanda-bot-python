@@ -304,7 +304,7 @@ class Bot(object):
                     pd.to_datetime(t["time"]),
                     t["id"],
                     float(t["pl"]),
-                    round(float(t["pl"]) / float(t["price"]) * 100, 2),
+                    round(float(t["pl"]), 2),
                     float(t["price"]),
                     float(t["accountBalance"]),
                 ]
@@ -338,7 +338,9 @@ class Bot(object):
         print(s)
 
         fig = plt.figure()
-        fig.subplots_adjust(hspace=0.7)
+        fig.subplots_adjust(
+            wspace=0.2, hspace=0.7, left=0.095, right=0.95, bottom=0.095, top=0.95
+        )
         ax1 = fig.add_subplot(3, 1, 1)
         ax1.plot(df["price"], label="price")
         ax1.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d\n%H:%M"))
@@ -537,7 +539,9 @@ class Bot(object):
         print(s)
 
         fig = plt.figure()
-        fig.subplots_adjust(hspace=0.5)
+        fig.subplots_adjust(
+            wspace=0.2, hspace=0.5, left=0.095, right=0.95, bottom=0.095, top=0.95
+        )
         ax1 = fig.add_subplot(3, 1, 1)
         ax1.plot(self.df.C, label="close")
         ax1.legend()
