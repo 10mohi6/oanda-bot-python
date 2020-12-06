@@ -292,6 +292,9 @@ class Bot(object):
                 "type": "ORDER_FILL",
             }
         ).json()
+        if len(tran["pages"]) == 0:
+            print("Transactions do not exist")
+            return None
         id = parse.parse_qs(parse.urlparse(tran["pages"][0]).query)["from"]
         data = []
         for t in self.__transactions_sinceid({"id": id, "type": "ORDER_FILL"}).json()[

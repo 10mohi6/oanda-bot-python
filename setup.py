@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="oanda-bot",
-    version="0.1.1",
+    version="0.1.2",
     description="oanda-bot is a python library \
         for automated trading bot with oanda rest api on Python 3.6 and above.",
     long_description=open("README.md").read(),
