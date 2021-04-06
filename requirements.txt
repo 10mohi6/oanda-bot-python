@@ -26,4 +26,4 @@ six==1.15.0
 slack-webhook==1.0.4
 toml==0.10.2
 tzlocal==2.1
-urllib3==1.26.2
+urllib3==1.26.4
