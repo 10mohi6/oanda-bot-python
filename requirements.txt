@@ -10,7 +10,7 @@ iniconfig==1.1.1
 kiwisolver==1.3.1
 linenotipy==1.0.2
 matplotlib==3.3.3
-numpy==1.19.4
+numpy==1.22.0
 packaging==20.7
 pandas==1.1.4
 Pillow==8.0.1
